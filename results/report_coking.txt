@@ -1,0 +1,44 @@
+2D pseudo-heterogeneous steam methane reformer -- thermal-hydraulic simulation and performance analysis
+run: 2026-10-15 19:35:37   command: coking
+
+========================================================================
+  Carbon deposition (coking) analysis
+========================================================================
+Coking (carbon deposition) analysis
+----------------------------------------------------------------
+  Thermodynamic risk anywhere     : YES
+  Peak carbon activity (actual)   : 8.011  at z = 0.10 m, r = 22.6 mm, T = 758 K
+  Controlling route               : C2: 2CO <-> C(s) + CO2 (Boudouard)
+  Safety margin (1 - a_C,max)     : -7.0105
+  Nodes flagged                   : 4.73 %
+
+  Peak activity by route
+    C1 methane cracking           : 1.42
+    C2 Boudouard                  : 8.011
+    C3 CO reduction               : 0.6761
+
+  Local S/C minimum along tube    : 1.87
+  Critical S/C (equilibrated gas) : 0.50 (worst axial station)
+
+  Flagged axial zones
+      0.00 -   0.65 m : C2: 2CO <-> C(s) + CO2 (Boudouard)
+  Table   -> results\coking_axial.csv
+
+Carbon-free boundary of the equilibrated gas
+     T[K]   critical S/C   cracking   Boudouard   CO reduction
+      700          0.377      0.377       0.366          0.370
+      760          0.489      0.480       0.477          0.489
+      820          0.620      0.599       0.601          0.620
+      880          0.747      0.723       0.727          0.747
+      940          0.849      0.831       0.835          0.849
+     1000          0.907      0.900       0.904          0.907
+     1060          0.924      0.920       0.924          0.912
+     1120          0.907      0.903       0.907          0.884
+     1180          0.883      0.878       0.883          0.853
+     1240          0.871      0.864       0.871          0.838
+     1300          0.873      0.866       0.873          0.842
+  Table   -> results\carbon_boundary.csv
+  Figure  -> results\fig06_coking.png
+  Figure  -> results\fig07_carbon_boundary.png
+
+Total wall time: 6.6 s

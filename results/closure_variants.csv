@@ -1,0 +1,10 @@
+variant,X_CH4,T_wall_max_K,dT_radial_K,T_out_K
+baseline,0.766834,1137.274,106.041,1114.964
+wall coefficient: Dixon,0.766834,1141.913,120.137,1114.964
+no bed radiation in k_er,0.766847,1137.860,107.716,1115.070
+no gas-solid film resistance,0.767890,1135.087,104.063,1113.720
+no radial mass dispersion,0.766361,1144.873,129.129,1114.123
+radial Peclet 6 (from 8),0.766733,1136.113,98.557,1114.697
+radial Peclet 12 (from 8),0.767015,1139.227,118.041,1115.445
+effectiveness: intrinsic (eta = 1),0.772093,1121.340,87.238,1109.101
+effectiveness: fixed literature values,0.769355,1133.147,113.342,1111.978

@@ -1,0 +1,8 @@
+metric,two_dimensional,radially_lumped,difference
+CH4 conversion [%],76.68340,76.64785,0.03555
+H2 production [mol/s],2.76235,2.76131,0.00105
+outlet bulk T [K],1114.96429,1114.03432,0.92997
+peak wall surface T [K],1137.27417,1131.46246,5.81171
+peak outer metal T [K],1150.33668,1144.52497,5.81171
+peak radial dT [K],106.04072,62.73996,43.30076
+pressure drop [bar],2.36819,2.36856,-0.00037

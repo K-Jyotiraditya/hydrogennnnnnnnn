@@ -1,0 +1,33 @@
+2D pseudo-heterogeneous steam methane reformer -- thermal-hydraulic simulation and performance analysis
+run: 2026-10-15 19:40:21   command: pareto
+
+========================================================================
+  Pareto fronts (epsilon-constraint)
+========================================================================
+Front 1: hydrogen production against the tube-wall temperature limit
+  (the production / tube-life trade-off)
+      eps    S/C  q[kW/m2]  Twall[K]  X_CH4[%]  H2[mol/s]  slip[%]   ok
+-----------------------------------------------------------------------
+ 1060.000   4.39     53.22    1059.7     71.06      2.712    7.688    y
+ 1088.000   4.31     58.12    1087.8     76.67      2.886    5.946    y
+ 1116.000   4.24     62.73    1115.8     81.71      3.036    4.503    y
+ 1144.000   4.17     66.95    1143.7     86.04      3.160    3.345    y
+ 1172.000   4.11     70.76    1171.7     89.61      3.257    2.437    y
+ 1200.000   4.05     74.16    1199.7     92.43      3.328    1.749    y
+
+Front 2: hydrogen production against steam consumption
+  (the production / utility-cost trade-off)
+      eps    S/C  q[kW/m2]  Twall[K]  X_CH4[%]  H2[mol/s]  slip[%]   ok
+-----------------------------------------------------------------------
+    2.000   2.00     51.38    1149.3     68.55      2.393    9.344    y
+    2.500   2.50     56.02    1149.4     74.38      2.634    7.094    y
+    3.000   3.00     60.08    1149.5     79.11      2.835    5.468    y
+    3.500   3.50     63.69    1149.7     82.97      3.004    4.258    y
+    4.000   4.00     66.88    1149.7     86.04      3.144    3.362    y
+    4.500   4.50     46.98    1025.4     63.70      2.473   10.240    y
+  Table   -> results\pareto_wall_temperature.csv
+  Table   -> results\pareto_steam.csv
+  Figure  -> results\fig09_pareto_wall_temperature.png
+  Figure  -> results\fig10_pareto_steam.png
+
+Total wall time: 172.5 s

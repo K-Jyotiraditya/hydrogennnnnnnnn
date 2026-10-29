@@ -1,0 +1,34 @@
+2D pseudo-heterogeneous steam methane reformer -- thermal-hydraulic simulation and performance analysis
+run: 2026-10-16 01:17:45   command: envelope
+
+========================================================================
+  Feasible operating envelope
+========================================================================
+  For each S/C the mean wall heat flux is raised until a constraint
+  becomes tight, and the binding constraint is recorded.
+
+   S/C   q_max[kW/m2]  binding            X_CH4   H2[mol/s]  T_wall[K]  dP[bar]
+   2.00        51.38  wall temperature 0.68552      2.394     1150.0    1.361
+   2.25        53.79  wall temperature 0.71626      2.519     1150.1    1.593
+   2.50        56.01  wall temperature 0.74359      2.633     1149.9    1.843
+   2.75        58.11  wall temperature 0.76859      2.739     1150.0    2.113
+   3.00        60.08  wall temperature 0.79105      2.835     1150.0    2.401
+   3.25        61.93  wall temperature 0.81125      2.923     1150.0    2.709
+   3.50        63.67  wall temperature 0.82942      3.003     1150.0    3.038
+   3.75        65.32  wall temperature 0.84575      3.077     1150.0    3.387
+   4.00        66.88  wall temperature 0.86041      3.144     1150.0    3.759
+   4.25        61.93  pressure drop    0.80857      3.011     1111.1    4.000
+   4.50        46.97  pressure drop    0.63685      2.473     1025.5    4.000
+
+  Constraint corner (last wall-limited S/C) : 4.00
+  S/C maximising hydrogen on the envelope   : 4.00
+
+  Below the corner the metallurgical limit binds and extra steam buys
+  conversion at constant peak wall temperature.  Above it the Ergun
+  pressure drop binds, the firing has to be cut faster than the
+  chemistry improves, and hydrogen production falls.  The optimum
+  therefore sits at the corner -- which is an independent, purely
+  geometric confirmation of what the numerical optimiser reports.
+  Table   -> results\operating_envelope.csv
+
+Total wall time: 48.2 s

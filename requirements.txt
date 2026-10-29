@@ -1,0 +1,5 @@
+# Runtime requirements for the 2D SMR tube model.
+# Tested on Python 3.14 with the versions noted; earlier 3.10+ releases work.
+numpy>=1.24        # tested: 2.4.4
+scipy>=1.10        # tested: 1.17.1   (solve_ivp, least_squares, optimize)
+matplotlib>=3.6    # tested: 3.10.9   (figures only; the solver does not need it)

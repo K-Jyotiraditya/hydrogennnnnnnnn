@@ -1,0 +1,54 @@
+2D pseudo-heterogeneous steam methane reformer -- thermal-hydraulic simulation and performance analysis
+run: 2026-10-15 19:30:45   command: baseline
+
+========================================================================
+  Baseline simulation
+========================================================================
+Configuration: industrial SMR tube (Nobandegani et al. 2021 geometry)
+----------------------------------------------------------------
+  Tube length / inner diameter : 13.60 m / 98.0 mm
+  Bed voidage / particle dia.  : 0.450 / 15.0 mm
+  Bed bulk density             : 1016 kg/m3 (104.2 kg per tube)
+  Feed  T / P                  : 793.0 K / 26.00 bar
+  Feed  total / CH4 flow       : 4.450 / 1.068 mol/s
+  Steam-to-carbon ratio        : 3.00
+  Superficial mass flux G      : 10.30 kg/(m2 s)
+  Wall BC                      : specified flux (industrial), mean 58.0 kW/m2
+  Total duty per tube          : 242.9 kW
+  Radial cells / integrator    : 12 / BDF
+  Effectiveness factor model   : thiele
+
+Outlet state
+----------------------------------------------------------------
+  Bulk (mixing-cup) temperature   :   1115.0 K
+  Centreline / near-wall T        :   1106.7 / 1121.5 K
+  Pressure (drop)                 :    23.63 bar (2.37 bar)
+  Methane conversion              :    76.68 %
+  Hydrogen yield                  :    2.586 mol H2 / mol CH4 fed
+  Hydrogen production             :    2.762 mol/s per tube
+  Methane slip (wet / dry)        :     4.09 / 6.21 %
+  Dry H2 / CO / CO2               :    71.69 / 12.81 / 8.73 %
+  H2/CO ratio                     :     5.60
+
+Thermal and mechanical limits
+----------------------------------------------------------------
+  Peak inner wall surface T       :   1137.3 K   (limit 1150 K)
+  Peak outer tube metal T         :   1150.3 K
+  Peak radial dT (wall-centre)    :    106.0 K
+  Heat duty per tube              :    242.9 kW
+
+Verification
+----------------------------------------------------------------
+  Enthalpy balance closure        : 1.40e-03 (relative)
+  Carbon atom balance             : -7.41e-11 (relative)
+  Mean effectiveness factor R1    :   0.0790
+  Integration                     :     0.70 s, 802 RHS calls
+
+  Tables  -> results\axial_profiles.csv
+            results\radial_temperature.csv
+  Figure  -> results\fig01_axial_overview.png
+  Figure  -> results\fig02_radial_temperature.png
+  Figure  -> results\fig03_radial_profiles.png
+  Figure  -> results\fig04_kinetic_diagnostics.png
+
+Total wall time: 3.1 s

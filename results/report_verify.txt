@@ -1,0 +1,74 @@
+2D pseudo-heterogeneous steam methane reformer -- thermal-hydraulic simulation and performance analysis
+run: 2026-10-24 22:04:20   command: verify
+
+========================================================================
+  Verification: convergence and conservation
+========================================================================
+Radial grid refinement (rtol = 1e-7)
+  n_r   t[s]   nfev    X_CH4      T_out[K]  T_wall[K]  dT_rad[K]  dP[bar]   enthalpy closure
+    4   0.53    650  0.766747  1114.759   1139.37    108.52    2.368  +1.109e-03
+    6   0.65    774  0.766798  1114.882   1138.26    107.25    2.368  +1.279e-03
+    8   0.76    897  0.766818  1114.929   1137.75    106.64    2.368  +1.346e-03
+   12   1.18   1069  0.766835  1114.965   1137.27    106.04    2.368  +1.397e-03
+   16   1.56   1290  0.766840  1114.977   1137.05    105.75    2.368  +1.415e-03
+   24   2.05   1743  0.766844  1114.986   1136.85    105.47    2.368  +1.427e-03
+   32   3.25   2671  0.766845  1114.989   1136.75    105.33    2.368  +1.432e-03
+
+Integration tolerance (12 radial cells)
+  rtol     t[s]   nfev    X_CH4      T_out[K]
+  1e-04   0.54    525  0.766858  1114.975
+  1e-05   0.69    658  0.766839  1114.966
+  1e-06   0.91    802  0.766834  1114.964
+  1e-07   1.15   1069  0.766835  1114.965
+  1e-08   1.54   1345  0.766834  1114.964
+
+Attribution of the global enthalpy-balance residual
+  The finite-volume radial operator is exactly conservative, so with
+  both optional transport terms switched off the balance must close
+  to integrator tolerance.  The residual of the full model is the
+  enthalpy carried by radial species dispersion, which is omitted on
+  purpose: the same eddy transport is already represented in k_er,
+  and counting it twice would overstate radial heat transfer.
+
+  model variant                    residual[W]   relative
+  full model                          +339.28   +1.397e-03
+  no radial mass dispersion            +30.72   +1.265e-04
+  no gas-solid film resistance        +309.96   +1.276e-03
+  neither                               +0.19   +7.642e-07
+
+Atomic balances of the full model (relative error)
+  C: -1.205e-12
+  H: -1.229e-12
+  O: -1.220e-12
+
+Equilibrium cross-check 1: two independent routes to the composition
+  Reaction extents with the Twigg correlations, against direct Gibbs
+  energy minimisation under atom conservation.  The two share nothing
+  beyond the NASA-7 polynomials.
+
+     T[K]  route             CH4       H2O        H2        CO       CO2        N2
+      900  extents       0.15291   0.53416   0.24820   0.01070   0.05403   0.00000
+           gibbs-min     0.15354   0.53564   0.24651   0.01072   0.05359   0.00000
+           max difference 1.69e-03
+     1000  extents       0.10043   0.43744   0.36241   0.03643   0.06328   0.00000
+           gibbs-min     0.10061   0.43781   0.36198   0.03640   0.06319   0.00000
+           max difference 4.29e-04
+     1100  extents       0.04761   0.35524   0.46223   0.07748   0.05744   0.00000
+           gibbs-min     0.04718   0.35389   0.46372   0.07713   0.05808   0.00000
+           max difference 1.49e-03
+     1200  extents       0.01432   0.31107   0.51749   0.11100   0.04612   0.00000
+           gibbs-min     0.01385   0.30887   0.51984   0.10988   0.04755   0.00000
+           max difference 2.36e-03
+  Table   -> results\equilibrium_cross_check.csv
+
+Equilibrium cross-check 2: Twigg correlations vs NASA-7 polynomials
+     T[K]      K1 Twigg     K1 thermo    K2 Twigg     K2 thermo
+      700    0.00027068   0.00027455        9.485       9.4152
+      800      0.032598     0.031791       4.3232       4.2198
+      900        1.3538       1.3201       2.3464       2.3002
+     1000        26.682       26.498       1.4391       1.4354
+     1100        305.85        311.4      0.96464      0.98666
+     1200        2334.8       2438.5      0.69119      0.72834
+     1300         13037        13933      0.52132      0.56741
+
+Total wall time: 24.4 s

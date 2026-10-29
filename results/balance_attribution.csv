@@ -1,0 +1,5 @@
+variant,residual_W,relative,C_balance,H_balance,O_balance
+full model,339.2761,1.3970e-03,-1.205e-12,-1.229e-12,-1.220e-12
+no radial mass dispersion,30.7212,1.2650e-04,0.000e+00,3.259e-16,-1.349e-16
+no gas-solid film resistance,309.9559,1.2763e-03,1.174e-11,1.174e-11,1.173e-11
+neither,0.1856,7.6422e-07,-5.988e-16,-6.517e-16,-9.440e-16

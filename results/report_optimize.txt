@@ -1,0 +1,59 @@
+2D pseudo-heterogeneous steam methane reformer -- thermal-hydraulic simulation and performance analysis
+run: 2026-10-15 19:35:45   command: optimize
+
+========================================================================
+  Operating-point optimisation
+========================================================================
+  Objective  : maximise H2 production, penalise CH4 slip (w = 1.00) and steam (w = 0.10)
+  Constraints: wall surface T <= 1150 K, dP <= 4.0 bar
+  Bounds     : S/C in (2.0, 4.5), q in (35.0, 95.0) kW/m2
+
+Optimisation result (slsqp)
+----------------------------------------------------------------
+  Status                          : converged -- Optimization terminated successfully
+  Evaluations / wall time         : 15 / 9.6 s
+
+  Optimal operating point
+    Steam-to-carbon ratio         :    4.154
+    Mean wall heat flux           :    67.80 kW/m2
+    Tube duty                     :    283.9 kW
+
+  Performance at the optimum
+    Methane conversion            :    86.87 %
+    Hydrogen production           :    3.183 mol/s per tube
+    Hydrogen yield                :    2.980 mol/mol CH4
+    Methane slip (dry)            :     3.13 %
+    Outlet bulk temperature       :   1124.9 K
+    Pressure drop                 :     4.00 bar
+
+  Constraint status
+    Peak wall surface temperature :   1149.7 K
+    Largest violation (<=0 is ok) :  +0.0000
+
+Optimisation result (nelder-mead)
+----------------------------------------------------------------
+  Status                          : converged -- Optimization terminated successfully.
+  Evaluations / wall time         : 91 / 54.2 s
+
+  Optimal operating point
+    Steam-to-carbon ratio         :    4.155
+    Mean wall heat flux           :    67.84 kW/m2
+    Tube duty                     :    284.0 kW
+
+  Performance at the optimum
+    Methane conversion            :    86.91 %
+    Hydrogen production           :    3.184 mol/s per tube
+    Hydrogen yield                :    2.981 mol/mol CH4
+    Methane slip (dry)            :     3.12 %
+    Outlet bulk temperature       :   1125.1 K
+    Pressure drop                 :     4.00 bar
+
+  Constraint status
+    Peak wall surface temperature :   1149.9 K
+    Largest violation (<=0 is ok) :  +0.0021
+
+  Best method: nelder-mead (objective 0.04430)
+  Table   -> results\optimization.csv
+  Figure  -> results\fig08_optimum_axial.png
+
+Total wall time: 64.5 s

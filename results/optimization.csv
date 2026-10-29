@@ -1,0 +1,2 @@
+method,S_C,q_mean_kW_m2,objective,X_CH4,H2_mol_s,slip_dry,T_wall_max_K,dP_bar,duty_kW,evaluations,wall_time_s
+slsqp,4.1543,67.798,0.046459,0.868704,3.18256,0.031301,1149.689,4.0000,283.88,15,11.63

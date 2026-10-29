@@ -1,0 +1,366 @@
+2D pseudo-heterogeneous steam methane reformer -- thermal-hydraulic simulation and performance analysis
+run: 2026-10-24 22:05:00   command: all
+
+========================================================================
+  Baseline simulation
+========================================================================
+Configuration: industrial SMR tube (Nobandegani et al. 2021 geometry)
+----------------------------------------------------------------
+  Tube length / inner diameter : 13.60 m / 98.0 mm
+  Bed voidage / particle dia.  : 0.450 / 15.0 mm
+  Bed bulk density             : 1016 kg/m3 (104.2 kg per tube)
+  Feed  T / P                  : 793.0 K / 26.00 bar
+  Feed  total / CH4 flow       : 4.450 / 1.068 mol/s
+  Steam-to-carbon ratio        : 3.00
+  Superficial mass flux G      : 10.30 kg/(m2 s)
+  Wall BC                      : specified flux (industrial), mean 58.0 kW/m2
+  Total duty per tube          : 242.9 kW
+  Radial cells / integrator    : 12 / BDF
+  Effectiveness factor model   : thiele
+
+Outlet state
+----------------------------------------------------------------
+  Bulk (mixing-cup) temperature   :   1115.0 K
+  Centreline / near-wall T        :   1106.7 / 1121.5 K
+  Pressure (drop)                 :    23.63 bar (2.37 bar)
+  Methane conversion              :    76.68 %
+  Hydrogen yield                  :    2.586 mol H2 / mol CH4 fed
+  Hydrogen production             :    2.762 mol/s per tube
+  Methane slip (wet / dry)        :     4.09 / 6.21 %
+  Dry H2 / CO / CO2               :    71.69 / 12.81 / 8.73 %
+  H2/CO ratio                     :     5.60
+
+Thermal and mechanical limits
+----------------------------------------------------------------
+  Peak inner wall surface T       :   1137.3 K   (limit 1150 K)
+  Peak outer tube metal T         :   1150.3 K
+  Peak radial dT (wall-centre)    :    106.0 K
+  Heat duty per tube              :    242.9 kW
+
+Verification
+----------------------------------------------------------------
+  Enthalpy balance closure        : 1.40e-03 (relative)
+  Carbon atom balance             : -7.41e-11 (relative)
+  Mean effectiveness factor R1    :   0.0790
+  Integration                     :     0.69 s, 802 RHS calls
+
+  Tables  -> results\axial_profiles.csv
+            results\radial_temperature.csv
+  Figure  -> results\fig01_axial_overview.png
+  Figure  -> results\fig02_radial_temperature.png
+  Figure  -> results\fig03_radial_profiles.png
+  Figure  -> results\fig04_kinetic_diagnostics.png
+
+========================================================================
+  Verification: convergence and conservation
+========================================================================
+Radial grid refinement (rtol = 1e-7)
+  n_r   t[s]   nfev    X_CH4      T_out[K]  T_wall[K]  dT_rad[K]  dP[bar]   enthalpy closure
+    4   0.69    650  0.766747  1114.759   1139.37    108.52    2.368  +1.109e-03
+    6   0.78    774  0.766798  1114.882   1138.26    107.25    2.368  +1.279e-03
+    8   0.80    897  0.766818  1114.929   1137.75    106.64    2.368  +1.346e-03
+   12   1.07   1069  0.766835  1114.965   1137.27    106.04    2.368  +1.397e-03
+   16   1.39   1290  0.766840  1114.977   1137.05    105.75    2.368  +1.415e-03
+   24   1.92   1743  0.766844  1114.986   1136.85    105.47    2.368  +1.427e-03
+   32   3.00   2671  0.766845  1114.989   1136.75    105.33    2.368  +1.432e-03
+
+Integration tolerance (12 radial cells)
+  rtol     t[s]   nfev    X_CH4      T_out[K]
+  1e-04   0.57    525  0.766858  1114.975
+  1e-05   0.65    658  0.766839  1114.966
+  1e-06   0.82    802  0.766834  1114.964
+  1e-07   1.15   1069  0.766835  1114.965
+  1e-08   1.31   1345  0.766834  1114.964
+
+Attribution of the global enthalpy-balance residual
+  The finite-volume radial operator is exactly conservative, so with
+  both optional transport terms switched off the balance must close
+  to integrator tolerance.  The residual of the full model is the
+  enthalpy carried by radial species dispersion, which is omitted on
+  purpose: the same eddy transport is already represented in k_er,
+  and counting it twice would overstate radial heat transfer.
+
+  model variant                    residual[W]   relative
+  full model                          +339.28   +1.397e-03
+  no radial mass dispersion            +30.72   +1.265e-04
+  no gas-solid film resistance        +309.96   +1.276e-03
+  neither                               +0.19   +7.642e-07
+
+Atomic balances of the full model (relative error)
+  C: -1.205e-12
+  H: -1.229e-12
+  O: -1.220e-12
+
+Equilibrium cross-check 1: two independent routes to the composition
+  Reaction extents with the Twigg correlations, against direct Gibbs
+  energy minimisation under atom conservation.  The two share nothing
+  beyond the NASA-7 polynomials.
+
+     T[K]  route             CH4       H2O        H2        CO       CO2        N2
+      900  extents       0.15291   0.53416   0.24820   0.01070   0.05403   0.00000
+           gibbs-min     0.15354   0.53564   0.24651   0.01072   0.05359   0.00000
+           max difference 1.69e-03
+     1000  extents       0.10043   0.43744   0.36241   0.03643   0.06328   0.00000
+           gibbs-min     0.10061   0.43781   0.36198   0.03640   0.06319   0.00000
+           max difference 4.29e-04
+     1100  extents       0.04761   0.35524   0.46223   0.07748   0.05744   0.00000
+           gibbs-min     0.04718   0.35389   0.46372   0.07713   0.05808   0.00000
+           max difference 1.49e-03
+     1200  extents       0.01432   0.31107   0.51749   0.11100   0.04612   0.00000
+           gibbs-min     0.01385   0.30887   0.51984   0.10988   0.04755   0.00000
+           max difference 2.36e-03
+  Table   -> results\equilibrium_cross_check.csv
+
+Equilibrium cross-check 2: Twigg correlations vs NASA-7 polynomials
+     T[K]      K1 Twigg     K1 thermo    K2 Twigg     K2 thermo
+      700    0.00027068   0.00027455        9.485       9.4152
+      800      0.032598     0.031791       4.3232       4.2198
+      900        1.3538       1.3201       2.3464       2.3002
+     1000        26.682       26.498       1.4391       1.4354
+     1100        305.85        311.4      0.96464      0.98666
+     1200        2334.8       2438.5      0.69119      0.72834
+     1300         13037        13933      0.52132      0.56741
+
+  Figure  -> results\fig05_grid_convergence.png
+
+========================================================================
+  Carbon deposition (coking) analysis
+========================================================================
+Coking (carbon deposition) analysis
+----------------------------------------------------------------
+  Thermodynamic risk anywhere     : YES
+  Peak carbon activity (actual)   : 8.011  at z = 0.10 m, r = 22.6 mm, T = 758 K
+  Controlling route               : C2: 2CO <-> C(s) + CO2 (Boudouard)
+  Safety margin (1 - a_C,max)     : -7.0105
+  Nodes flagged                   : 4.73 %
+
+  Peak activity by route
+    C1 methane cracking           : 1.42
+    C2 Boudouard                  : 8.011
+    C3 CO reduction               : 0.6761
+
+  Local S/C minimum along tube    : 1.87
+  Critical S/C (equilibrated gas) : 0.50 (worst axial station)
+
+  Flagged axial zones
+      0.00 -   0.65 m : C2: 2CO <-> C(s) + CO2 (Boudouard)
+  Table   -> results\coking_axial.csv
+
+Carbon-free boundary of the equilibrated gas
+     T[K]   critical S/C   cracking   Boudouard   CO reduction
+      700          0.377      0.377       0.366          0.370
+      760          0.489      0.480       0.477          0.489
+      820          0.620      0.599       0.601          0.620
+      880          0.747      0.723       0.727          0.747
+      940          0.849      0.831       0.835          0.849
+     1000          0.907      0.900       0.904          0.907
+     1060          0.924      0.920       0.924          0.912
+     1120          0.907      0.903       0.907          0.884
+     1180          0.883      0.878       0.883          0.853
+     1240          0.871      0.864       0.871          0.838
+     1300          0.873      0.866       0.873          0.842
+  Table   -> results\carbon_boundary.csv
+  Figure  -> results\fig06_coking.png
+  Figure  -> results\fig07_carbon_boundary.png
+
+========================================================================
+  Operating-point optimisation
+========================================================================
+  Objective  : maximise H2 production, penalise CH4 slip (w = 1.00) and steam (w = 0.10)
+  Constraints: wall surface T <= 1150 K, dP <= 4.0 bar
+  Bounds     : S/C in (2.0, 4.5), q in (35.0, 95.0) kW/m2
+
+Optimisation result (slsqp)
+----------------------------------------------------------------
+  Status                          : converged -- Optimization terminated successfully
+  Evaluations / wall time         : 15 / 11.6 s
+
+  Optimal operating point
+    Steam-to-carbon ratio         :    4.154
+    Mean wall heat flux           :    67.80 kW/m2
+    Tube duty                     :    283.9 kW
+
+  Performance at the optimum
+    Methane conversion            :    86.87 %
+    Hydrogen production           :    3.183 mol/s per tube
+    Hydrogen yield                :    2.980 mol/mol CH4
+    Methane slip (dry)            :     3.13 %
+    Outlet bulk temperature       :   1124.9 K
+    Pressure drop                 :     4.00 bar
+
+  Constraint status
+    Peak wall surface temperature :   1149.7 K
+    Largest violation (<=0 is ok) :  +0.0000
+
+  Best method: slsqp (objective 0.04646)
+  Table   -> results\optimization.csv
+  Figure  -> results\fig08_optimum_axial.png
+
+========================================================================
+  Pareto fronts (epsilon-constraint)
+========================================================================
+Front 1: hydrogen production against the tube-wall temperature limit
+  (the production / tube-life trade-off)
+      eps    S/C  q[kW/m2]  Twall[K]  X_CH4[%]  H2[mol/s]  slip[%]   ok
+-----------------------------------------------------------------------
+ 1060.000   4.39     53.22    1059.7     71.06      2.712    7.688    y
+ 1088.000   4.31     58.12    1087.8     76.67      2.886    5.946    y
+ 1116.000   4.24     62.73    1115.8     81.71      3.036    4.503    y
+ 1144.000   4.17     66.95    1143.7     86.04      3.160    3.345    y
+ 1172.000   4.11     70.76    1171.7     89.61      3.257    2.437    y
+ 1200.000   4.05     74.16    1199.7     92.43      3.328    1.749    y
+
+Front 2: hydrogen production against steam consumption
+  (the production / utility-cost trade-off)
+      eps    S/C  q[kW/m2]  Twall[K]  X_CH4[%]  H2[mol/s]  slip[%]   ok
+-----------------------------------------------------------------------
+    2.000   2.00     51.38    1149.3     68.55      2.393    9.344    y
+    2.500   2.50     56.02    1149.4     74.38      2.634    7.094    y
+    3.000   3.00     60.08    1149.5     79.11      2.835    5.468    y
+    3.500   3.50     63.69    1149.7     82.97      3.004    4.258    y
+    4.000   4.00     66.88    1149.7     86.04      3.144    3.362    y
+    4.500   4.50     46.98    1025.4     63.70      2.473   10.240    y
+  Table   -> results\pareto_wall_temperature.csv
+  Table   -> results\pareto_steam.csv
+  Figure  -> results\fig09_pareto_wall_temperature.png
+  Figure  -> results\fig10_pareto_steam.png
+
+========================================================================
+  Feasible operating envelope
+========================================================================
+  For each S/C the mean wall heat flux is raised until a constraint
+  becomes tight, and the binding constraint is recorded.
+
+   S/C   q_max[kW/m2]  binding            X_CH4   H2[mol/s]  T_wall[K]  dP[bar]
+   2.00        51.38  wall temperature 0.68552      2.394     1150.0    1.361
+   2.25        53.79  wall temperature 0.71626      2.519     1150.1    1.593
+   2.50        56.01  wall temperature 0.74359      2.633     1149.9    1.843
+   2.75        58.11  wall temperature 0.76859      2.739     1150.0    2.113
+   3.00        60.08  wall temperature 0.79105      2.835     1150.0    2.401
+   3.25        61.93  wall temperature 0.81125      2.923     1150.0    2.709
+   3.50        63.67  wall temperature 0.82942      3.003     1150.0    3.038
+   3.75        65.32  wall temperature 0.84575      3.077     1150.0    3.387
+   4.00        66.88  wall temperature 0.86041      3.144     1150.0    3.759
+   4.25        61.93  pressure drop    0.80857      3.011     1111.1    4.000
+   4.50        46.97  pressure drop    0.63685      2.473     1025.5    4.000
+
+  Constraint corner (last wall-limited S/C) : 4.00
+  S/C maximising hydrogen on the envelope   : 4.00
+
+  Below the corner the metallurgical limit binds and extra steam buys
+  conversion at constant peak wall temperature.  Above it the Ergun
+  pressure drop binds, the firing has to be cut faster than the
+  chemistry improves, and hydrogen production falls.  The optimum
+  therefore sits at the corner -- which is an independent, purely
+  geometric confirmation of what the numerical optimiser reports.
+  Table   -> results\operating_envelope.csv
+  Figure  -> results\fig12_operating_envelope.png
+
+========================================================================
+  Model assessment: dimensionality and closure uncertainty
+========================================================================
+Is the second dimension earning its cost?
+  The same tube is run against its own radially lumped limit, taken by
+  driving k_er to 1e5 W/m/K so the bed is isothermal in r while every
+  other closure, the wall film included, is left untouched.  The
+  difference is the contribution of the resolved radial profile alone.
+
+  metric                                   2D       lumped   difference
+  --------------------------------------------------------------------
+  CH4 conversion [%]                   76.683       76.648        0.036
+  H2 production [mol/s]                 2.762        2.761        0.001
+  outlet bulk T [K]                  1114.964     1114.034        0.930
+  peak wall surface T [K]            1137.274     1131.462        5.812
+  peak outer metal T [K]             1150.337     1144.525        5.812
+  peak radial dT [K]                  106.041       62.740       43.301
+  pressure drop [bar]                   2.368        2.369       -0.000
+
+  VERDICT: Radial resolution changes the duty predictions negligibly (<0.5 conversion points, <10 K on peak wall temperature). 2D is needed for the gradient itself and for radially resolved diagnostics such as coking, not for duty.
+
+Effective radial conductivity sweep
+  Published k_er correlations for comparable geometries disagree by a
+  factor approaching two; the radial gradient scales roughly as 1/k_er.
+
+  k_er [W/m/K]    peak wall T [K]   peak radial dT [K]    X_CH4 [%]
+          15.0            1144.45               125.63       76.707
+          22.0            1140.85               112.06       76.688
+          30.0            1138.60               102.69       76.676
+          45.0            1136.38                92.47       76.665
+          60.0            1135.20                86.51       76.659
+
+  Peak radial dT spans 86.5 to 125.6 K over this range.  The
+  correlated value of 106.0 K therefore carries about +/-20 K of closure uncertainty,
+  and should be quoted with it.
+
+One-at-a-time closure variants
+  variant                                   X_CH4 [%]   T_wall [K]   dT_rad [K]
+  baseline                                      76.68       1137.3        106.0
+  wall coefficient: Dixon                       76.68       1141.9        120.1
+  no bed radiation in k_er                      76.68       1137.9        107.7
+  no gas-solid film resistance                  76.79       1135.1        104.1
+  no radial mass dispersion                     76.64       1144.9        129.1
+  radial Peclet 6 (from 8)                      76.67       1136.1         98.6
+  radial Peclet 12 (from 8)                     76.70       1139.2        118.0
+  effectiveness: intrinsic (eta = 1)            77.21       1121.3         87.2
+  effectiveness: fixed literature values        76.94       1133.1        113.3
+
+  Largest deviation from baseline over all variants:
+    CH4 conversion [%]                  0.526
+    H2 production [mol/s]               0.016
+    outlet bulk T [K]                   5.863
+    peak wall surface T [K]            15.934
+    peak outer metal T [K]             15.934
+    peak radial dT [K]                 23.088
+    pressure drop [bar]                 0.011
+
+  Reading: the duty predictions are robust to every closure tested,
+  while the thermal diagnostics carry a band of tens of kelvin.  That
+  is the right way round for a heat-transfer-limited tube, and it is
+  why the conversion number is quoted plainly while the radial
+  gradient is quoted with an uncertainty.
+  Figure  -> results\fig13_model_assessment.png
+
+========================================================================
+  Design-space sensitivity scan
+========================================================================
+   S/C   q[kW/m2]   X_CH4    H2[mol/s]  slip[%]  T_wall[K]  dT_rad[K]  dP[bar]   a_C,max
+  2.00     40.00  0.53882      1.949    15.63     1084.0       88.3    1.242       5.8
+  2.00     50.00  0.66795      2.341    10.01     1141.9      104.4    1.346      5.81
+  2.00     60.00  0.79217      2.708     5.68     1203.8      119.3    1.454      5.82
+  2.00     70.00  0.90309      3.028     2.45     1281.1      133.5    1.567      5.82
+  2.00     80.00  0.97746      3.227     0.54     1402.7      147.2    1.691      5.84
+  2.00     90.00  0.99772      3.257     0.05     1588.1      160.4    1.836      5.96
+  2.50     40.00  0.54187      2.013    15.12     1059.9       83.6    1.638       6.1
+  2.50     50.00  0.66920      2.409     9.72     1115.6       99.4    1.765       6.1
+  2.50     60.00  0.79137      2.775     5.57     1174.1      114.2    1.896       6.1
+  2.50     70.00  0.89996      3.087     2.48     1245.9      128.2    2.032      6.11
+  2.50     80.00  0.97378      3.278     0.62     1354.2      141.6    2.181      6.11
+  2.50     90.00  0.99683      3.306     0.07     1515.0      154.5    2.352      6.11
+  3.00     40.00  0.54440      2.065    14.70     1039.3       79.2    2.091      6.17
+  3.00     50.00  0.66999      2.466     9.49     1093.3       94.8    2.244      6.18
+  3.00     60.00  0.79011      2.832     5.50     1149.5      109.5    2.400      6.18
+  3.00     70.00  0.89640      3.139     2.52     1217.2      123.4    2.562      6.18
+  3.00     80.00  0.96973      3.326     0.71     1315.2      136.8    2.738      6.18
+  3.00     90.00  0.99560      3.357     0.10     1456.9      149.7    2.937      6.18
+  3.50     40.00  0.54683      2.109    14.33     1021.3       75.1    2.605         6
+  3.50     50.00  0.67076      2.515     9.30     1073.8       90.4    2.785         6
+  3.50     60.00  0.78890      2.882     5.43     1128.1      104.8    2.969         6
+  3.50     70.00  0.89300      3.186     2.57     1192.6      118.7    3.160         6
+  3.50     80.00  0.96573      3.373     0.79     1282.7      132.0    3.365         6
+  3.50     90.00  0.99410      3.407     0.13     1409.4      144.9    3.595      6.01
+  4.00     40.00  0.54939      2.147    14.00     1005.2       71.4    3.183      5.62
+  4.00     50.00  0.67172      2.557     9.11     1056.4       86.2    3.394      5.62
+  4.00     60.00  0.78797      2.926     5.37     1109.1      100.4    3.608      5.62
+  4.00     70.00  0.88997      3.229     2.60     1171.0      114.0    3.830      5.62
+  4.00     80.00  0.96196      3.416     0.86     1254.8      127.0    4.069      5.62
+  4.00     90.00  0.99240      3.456     0.17     1369.6      139.8    4.334      5.62
+  4.50     40.00  0.55221      2.181    13.69      990.8       67.9    3.830      5.12
+  4.50     50.00  0.67300      2.594     8.94     1040.6       82.3    4.074      5.12
+  4.50     60.00  0.78742      2.965     5.31     1091.9       96.1    4.322      5.12
+  4.50     70.00  0.88740      3.268     2.63     1151.5      109.4    4.579      5.12
+  4.50     80.00  0.95849      3.456     0.93     1230.3      122.3    4.855      5.12
+  4.50     90.00  0.99056      3.503     0.21     1335.7      134.7    5.160      5.12
+  Table   -> results\sensitivity.csv
+  Figure  -> results\fig11_sensitivity.png
+
+Total wall time: 388.8 s

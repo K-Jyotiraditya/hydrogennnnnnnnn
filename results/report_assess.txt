@@ -1,0 +1,68 @@
+2D pseudo-heterogeneous steam methane reformer -- thermal-hydraulic simulation and performance analysis
+run: 2026-10-16 20:45:56   command: assess
+
+========================================================================
+  Model assessment: dimensionality and closure uncertainty
+========================================================================
+Is the second dimension earning its cost?
+  The same tube is run against its own radially lumped limit, taken by
+  driving k_er to 1e5 W/m/K so the bed is isothermal in r while every
+  other closure, the wall film included, is left untouched.  The
+  difference is the contribution of the resolved radial profile alone.
+
+  metric                                   2D       lumped   difference
+  --------------------------------------------------------------------
+  CH4 conversion [%]                   76.683       76.648        0.036
+  H2 production [mol/s]                 2.762        2.761        0.001
+  outlet bulk T [K]                  1114.964     1114.034        0.930
+  peak wall surface T [K]            1137.274     1131.462        5.812
+  peak outer metal T [K]             1150.337     1144.525        5.812
+  peak radial dT [K]                  106.041       62.740       43.301
+  pressure drop [bar]                   2.368        2.369       -0.000
+
+  VERDICT: Radial resolution changes the duty predictions negligibly (<0.5 conversion points, <10 K on peak wall temperature). 2D is needed for the gradient itself and for radially resolved diagnostics such as coking, not for duty.
+
+Effective radial conductivity sweep
+  Published k_er correlations for comparable geometries disagree by a
+  factor approaching two; the radial gradient scales roughly as 1/k_er.
+
+  k_er [W/m/K]    peak wall T [K]   peak radial dT [K]    X_CH4 [%]
+          15.0            1144.45               125.63       76.707
+          22.0            1140.85               112.06       76.688
+          30.0            1138.60               102.69       76.676
+          45.0            1136.38                92.47       76.665
+          60.0            1135.20                86.51       76.659
+
+  Peak radial dT spans 86.5 to 125.6 K over this range.  The
+  correlated value of 106.0 K therefore carries about +/-20 K of closure uncertainty,
+  and should be quoted with it.
+
+One-at-a-time closure variants
+  variant                                   X_CH4 [%]   T_wall [K]   dT_rad [K]
+  baseline                                      76.68       1137.3        106.0
+  wall coefficient: Dixon                       76.68       1141.9        120.1
+  no bed radiation in k_er                      76.68       1137.9        107.7
+  no gas-solid film resistance                  76.79       1135.1        104.1
+  no radial mass dispersion                     76.64       1144.9        129.1
+  radial Peclet 6 (from 8)                      76.67       1136.1         98.6
+  radial Peclet 12 (from 8)                     76.70       1139.2        118.0
+  effectiveness: intrinsic (eta = 1)            77.21       1121.3         87.2
+  effectiveness: fixed literature values        76.94       1133.1        113.3
+
+  Largest deviation from baseline over all variants:
+    CH4 conversion [%]                  0.526
+    H2 production [mol/s]               0.016
+    outlet bulk T [K]                   5.863
+    peak wall surface T [K]            15.934
+    peak outer metal T [K]             15.934
+    peak radial dT [K]                 23.088
+    pressure drop [bar]                 0.011
+
+  Reading: the duty predictions are robust to every closure tested,
+  while the thermal diagnostics carry a band of tens of kelvin.  That
+  is the right way round for a heat-transfer-limited tube, and it is
+  why the conversion number is quoted plainly while the radial
+  gradient is quoted with an uncertainty.
+  Figure  -> results\fig13_model_assessment.png
+
+Total wall time: 21.4 s
